@@ -129,12 +129,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CORS and additional settings
 MIDDLEWARE = ["corsheaders.middleware.CorsMiddleware", *MIDDLEWARE]  # put first
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["localhost"]
 
 # CORS
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "http://127.0.0.1:5173",
 ]
 CORS_ALLOW_CREDENTIALS = False  # no cookies needed for JWT
 # If sending Authorization: Bearer
