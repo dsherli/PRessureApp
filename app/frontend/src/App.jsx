@@ -1,10 +1,43 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { apiService } from './services/api'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [backendStatus, setBackendStatus] = useState({ connected: false, message: '' })
+  const [loading, setLoading] = useState(true)
+
+  // Test backend connection on component mount
+  useEffect(() => {
+    const testBackendConnection = async () => {
+      try {
+        setLoading(true)
+
+        // Test health endpoint
+        const healthResponse = await apiService.health()
+
+        // Test root endpoint
+        const rootResponse = await apiService.getRoot()
+
+        setBackendStatus({
+          connected: true,
+          message: `✅ Backend connected! ${rootResponse.data.message}`
+        })
+      } catch (error) {
+        console.error('Backend connection failed:', error)
+        setBackendStatus({
+          connected: false,
+          message: '❌ Backend connection failed. Make sure Django server is running on port 8000.'
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    testBackendConnection()
+  }, [])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center">
@@ -21,6 +54,18 @@ function App() {
         <h1 className="text-6xl font-bold text-white mb-8">
           <span className="text-blue-400">PRessure</span> App
         </h1>
+
+        {/* Backend Connection Status */}
+        <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 max-w-lg mx-auto mb-8">
+          <h3 className="text-xl font-semibold text-white mb-4">Backend Connection</h3>
+          {loading ? (
+            <div className="text-gray-300">🔄 Testing connection...</div>
+          ) : (
+            <div className={`text-sm ${backendStatus.connected ? 'text-green-300' : 'text-red-300'}`}>
+              {backendStatus.message}
+            </div>
+          )}
+        </div>
 
         <div className="bg-white/10 backdrop-blur-lg rounded-xl p-8 max-w-md mx-auto">
           <button

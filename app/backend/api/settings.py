@@ -129,14 +129,32 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CORS and additional settings
 MIDDLEWARE = ["corsheaders.middleware.CorsMiddleware", *MIDDLEWARE]  # put first
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
-# CORS
+# CORS Configuration
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    "http://localhost:5173",  # Vite dev server
+    "http://127.0.0.1:5173",
 ]
 CORS_ALLOW_CREDENTIALS = False  # no cookies needed for JWT
+
+# Additional CORS settings for development
+CORS_ALLOW_ALL_ORIGINS = DEBUG  # Only allow all origins in debug mode
+
 # If sending Authorization: Bearer
 from corsheaders.defaults import default_headers
 
 CORS_ALLOW_HEADERS = list(default_headers) + ["authorization"]
+
+# Django REST Framework configuration
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",  # Change this later for authentication
+    ],
+}
