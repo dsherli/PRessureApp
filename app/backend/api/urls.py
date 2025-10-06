@@ -34,10 +34,27 @@ def api_root(_):
     )
 
 
+def api_index(_):
+    # a small machine-friendly index for /api/
+    return JsonResponse(
+        {
+            "api": "PRessure App API",
+            "version": "1.0",
+            "endpoints": {
+                "health": "/health/",
+                "users": "/api/users/",
+                "workouts": "/api/workouts/",
+            },
+        }
+    )
+
+
 urlpatterns = [
     path("", api_root, name="api-root"),
     path("admin/", admin.site.urls),
     path("health/", health, name="health"),
-    path("api/", include("users.urls")),
-    path("api/", include("workouts.urls")),
+    # API index and explicit subpaths so /api/ and /api/<app>/ work predictably
+    path("api/", api_index, name="api-index"),
+    path("api/users/", include("users.urls")),
+    path("api/workouts/", include("workouts.urls")),
 ]
