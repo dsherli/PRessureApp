@@ -1,6 +1,5 @@
-from django.urls import path
 from django.http import JsonResponse
-from . import views
+from django.urls import path
 
 app_name = "users"
 

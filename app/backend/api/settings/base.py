@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+from corsheaders.defaults import default_headers
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -144,8 +146,6 @@ CORS_ALLOW_CREDENTIALS = False  # no cookies needed for JWT
 CORS_ALLOW_ALL_ORIGINS = DEBUG  # Only allow all origins in debug mode
 
 # If sending Authorization: Bearer
-from corsheaders.defaults import default_headers
-
 CORS_ALLOW_HEADERS = list(default_headers) + ["authorization"]
 
 # Django REST Framework configuration
