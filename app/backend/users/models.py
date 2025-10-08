@@ -1,7 +1,6 @@
+from core.choices import ExperienceLevel, Gender, Units
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
-from core.choices import ExperienceLevel, Units, Gender
 
 
 class User(AbstractUser):
@@ -11,9 +10,7 @@ class User(AbstractUser):
     height = models.FloatField(null=True, blank=True)
     weight = models.FloatField(null=True, blank=True)
     fitness_level = models.CharField(
-        max_length = 20,
-        choices = ExperienceLevel.choices,
-        default = ExperienceLevel.BEGINNER
+        max_length=20, choices=ExperienceLevel.choices, default=ExperienceLevel.BEGINNER
     )
     preferred_units = models.CharField(
         max_length=10,
@@ -21,10 +18,7 @@ class User(AbstractUser):
         default=Units.IMPERIAL,
     )
     gender = models.CharField(
-        max_length = 20,
-        choices = Gender.choices,
-        blank = True,
-        null = True
+        max_length=20, choices=Gender.choices, blank=True, null=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

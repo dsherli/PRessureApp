@@ -1,5 +1,6 @@
-from django.db import models
 from django.conf import settings  # user model
+from django.db import models
+
 
 class MuscleGroup(models.Model):
     name = models.CharField(max_length=64, unique=True)
@@ -8,19 +9,28 @@ class MuscleGroup(models.Model):
     def __str__(self):
         return self.name
 
+
 class Workout(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     primary_muscle_groups = models.ManyToManyField(MuscleGroup, blank=True)
-    secondary_muscle_groups = models.ManyToManyField(MuscleGroup, related_name="secondary_exercises", blank=True)
+    secondary_muscle_groups = models.ManyToManyField(
+        MuscleGroup, related_name="secondary_exercises", blank=True
+    )
     is_public = models.BooleanField(default=True)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL
+    )
 
     def __str__(self):
         return self.name
-        
+
+
 class Exercise(models.Model):
     name = models.CharField(max_length=64)
-    primary_muscle = models.ForeignKey(MuscleGroup, on_delete=models.PROTECT, related_name="primary_exercises")
+    primary_muscle = models.ForeignKey(
+        MuscleGroup, on_delete=models.PROTECT, related_name="primary_exercises"
+    )
     UNIT_KG = "kg"
     UNIT_LB = "lb"
     UNIT_SEC = "sec"
@@ -34,14 +44,19 @@ class Exercise(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
 class WorkoutExercise(models.Model):
-    workout = models.ForeignKey(Workout, related_name="workout_exercises", on_delete=models.CASCADE)
+    workout = models.ForeignKey(
+        Workout, related_name="workout_exercises", on_delete=models.CASCADE
+    )
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=0)
     default_reps = models.PositiveIntegerField(null=True, blank=True)
     default_sets = models.PositiveIntegerField(null=True, blank=True)
-    default_weight =models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    default_weight = models.DecimalField(
+        max_digits=6, decimal_places=2, null=True, blank=True
+    )
 
     class Meta:
         ordering = ["order"]
@@ -49,9 +64,12 @@ class WorkoutExercise(models.Model):
     def __str__(self):
         return f"{self.workout.name} - {self.order}: {self.exercise.name}"
 
+
 class WorkoutSession(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    workout = models.ForeignKey(Workout, null=True, blank=True, on_delete=models.SET_NULL)
+    workout = models.ForeignKey(
+        Workout, null=True, blank=True, on_delete=models.SET_NULL
+    )
     started_at = models.DateTimeField(auto_now_add=True)
     ended_at = models.DateTimeField(null=True, blank=True)
 
@@ -63,10 +81,37 @@ class WorkoutSession(models.Model):
     def __str__(self):
         return f"Session {self.id} by {self.user}"
 
+    def total_sets(self):
+        """Return total number of sets recorded in this session across all exercises."""
+        return self.sets.count()
+
+    def sets_by_exercise(self):
+        """Return a dict grouping sets by workout_exercise or exercise.
+
+        Keys are (workout_exercise_id or None, exercise_id or None) tuples and values
+        are QuerySets of SetEntry for that key. This is useful for UI grouping.
+        """
+        qs = self.sets.select_related("workout_exercise", "exercise")
+        groups = {}
+        for s in qs:
+            key = (
+                getattr(s.workout_exercise, "id", None),
+                getattr(s.exercise, "id", None),
+            )
+            groups.setdefault(key, []).append(s)
+        return groups
+
+
 class SetEntry(models.Model):
-    session = models.ForeignKey(WorkoutSession, related_name="sets", on_delete=models.CASCADE)
-    workout_exercise = models.ForeignKey(WorkoutExercise, null=True, blank=True, on_delete=models.SET_NULL)
-    exercise = models.ForeignKey(Exercise, null=True, blank=True, on_delete=models.SET_NULL)
+    session = models.ForeignKey(
+        WorkoutSession, related_name="sets", on_delete=models.CASCADE
+    )
+    workout_exercise = models.ForeignKey(
+        WorkoutExercise, null=True, blank=True, on_delete=models.SET_NULL
+    )
+    exercise = models.ForeignKey(
+        Exercise, null=True, blank=True, on_delete=models.SET_NULL
+    )
     order = models.PositiveIntegerField(default=0)
     reps = models.PositiveIntegerField(null=True, blank=True)
     weight = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
