@@ -22,4 +22,3 @@ Environment example files:
 - `app/frontend/.env.example`
 
 If you want, run the helper script `dev-start.sh` (UNIX shell) or open both READMEs for PowerShell commands.
-
