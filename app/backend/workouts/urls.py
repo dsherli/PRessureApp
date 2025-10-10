@@ -16,11 +16,9 @@ def workouts_index(_):
     )
 
 
+from .views import ProtectedWriteExample
+
 urlpatterns = [
     path("", workouts_index, name="workouts-index"),
-    # Workout endpoints
-    # path('workouts/', views.workout_list, name='workout-list'),
-    # path('workouts/<int:pk>/', views.workout_detail, name='workout-detail'),
-    # path('exercises/', views.exercise_list, name='exercise-list'),
-    # path('exercises/<int:pk>/', views.exercise_detail, name='exercise-detail'),
+    path("protected-write/", ProtectedWriteExample.as_view(), name="protected-write"),
 ]
