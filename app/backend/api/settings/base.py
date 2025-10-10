@@ -140,7 +140,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vite dev server
     "http://127.0.0.1:5173",
 ]
-CORS_ALLOW_CREDENTIALS = False  # no cookies needed for JWT
+CORS_ALLOW_CREDENTIALS = True  # allow cookies (session auth)
 
 # Additional CORS settings for development
 CORS_ALLOW_ALL_ORIGINS = DEBUG  # Only allow all origins in debug mode
@@ -156,7 +156,12 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": [
         "rest_framework.parsers.JSONParser",
     ],
+    # Anonymous users can read (safe methods), writes require auth
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",  # Change this later for authentication
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
+    # Use cookie-based session auth (enforces CSRF for unsafe methods)
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
     ],
 }
