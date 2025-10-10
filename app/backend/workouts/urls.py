@@ -16,9 +16,27 @@ def workouts_index(_):
     )
 
 
-from .views import ProtectedWriteExample
+from .views import (
+    ProtectedWriteExample,
+    SessionSetListCreate,
+    WorkoutSessionDetail,
+    WorkoutSessionListCreate,
+    WorkoutTemplateList,
+)
 
 urlpatterns = [
     path("", workouts_index, name="workouts-index"),
+    path("templates/", WorkoutTemplateList.as_view(), name="workout-templates"),
+    path("sessions/", WorkoutSessionListCreate.as_view(), name="workout-sessions"),
+    path(
+        "sessions/<int:pk>/",
+        WorkoutSessionDetail.as_view(),
+        name="workout-session-detail",
+    ),
+    path(
+        "sessions/<int:pk>/sets/",
+        SessionSetListCreate.as_view(),
+        name="workout-session-sets",
+    ),
     path("protected-write/", ProtectedWriteExample.as_view(), name="protected-write"),
 ]
