@@ -16,6 +16,7 @@ export default function AppRoutes() {
       <Route path="/workout/:id" element={<Workout />} />
       <Route path="/history" element={<History />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="*" element={<div>Not Found</div>} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
