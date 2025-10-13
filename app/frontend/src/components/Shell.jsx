@@ -1,3 +1,6 @@
+import React from "react";
+import { Outlet } from "react-router-dom";
+
 export default function Shell({ children }) {
   return (
     <div
@@ -39,7 +42,7 @@ export default function Shell({ children }) {
         className="flex-1 overflow-auto p-8"
         style={{ backgroundColor: "#18181b" }}
       >
-        {children}
+        <Outlet />
       </main>
       <nav
         className="border-t flex items-center justify-around px-4 py-3"
