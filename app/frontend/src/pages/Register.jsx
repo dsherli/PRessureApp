@@ -6,7 +6,7 @@ import axios from "axios";
 const API = import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000/api";
 
 export default function Register() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState(new Date());
   const [password, setPassword] = useState("");
@@ -21,7 +21,7 @@ export default function Register() {
     password === passwordConfirmation;
 
   const formValid =
-    name.trim() &&
+    username.trim() &&
     email.trim() &&
     dob &&
     password &&
@@ -33,7 +33,7 @@ export default function Register() {
 
     try {
       const response = await axios.post(`${API}/users/auth/register/`, {
-        username: name,
+        username,
         email,
         password,
       });
@@ -52,13 +52,15 @@ export default function Register() {
         </h1>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm text-slate-300 mb-1">Name</label>
+            <label className="block text-sm text-slate-300 mb-1">
+              Username
+            </label>
             <input
               type="text"
               className="w-full rounded-lg bg-white/10 text-white border border-white/20 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)} // update state
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)} // update state
             />
           </div>
           <div>
