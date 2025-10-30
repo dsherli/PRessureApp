@@ -106,64 +106,6 @@ export default function Profile() {
             </div>
           </div>
         </form>
-
-        <div className="space-y-6">
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6">
-            <div className="flex items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-400/40 bg-emerald-500/10 text-emerald-200">
-                <BellRing className="h-5 w-5" />
-              </span>
-              <div>
-                <h4 className="text-lg font-semibold text-zinc-50">
-                  Notifications
-                </h4>
-                <p className="text-sm text-zinc-400">
-                  Choose how you want to stay in sync with upcoming sessions.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 space-y-4 text-sm">
-              <label className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-900 px-4 py-3">
-                <span className="text-zinc-200">Email reminders</span>
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 accent-indigo-500"
-                  checked={emailAlerts}
-                  onChange={(event) => setEmailAlerts(event.target.checked)}
-                />
-              </label>
-              <label className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-900 px-4 py-3">
-                <span className="text-zinc-200">SMS check-ins</span>
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 accent-indigo-500"
-                  checked={smsAlerts}
-                  onChange={(event) => setSmsAlerts(event.target.checked)}
-                />
-              </label>
-            </div>
-          </div>
-
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6">
-            <div className="flex items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-amber-400/40 bg-amber-500/10 text-amber-200">
-                <ShieldCheck className="h-5 w-5" />
-              </span>
-              <div>
-                <h4 className="text-lg font-semibold text-zinc-50">
-                  Recovery markers
-                </h4>
-                <p className="text-sm text-zinc-400">
-                  Sync with wearables to surface HRV and sleep trends.
-                </p>
-              </div>
-            </div>
-            <button className="mt-5 inline-flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm font-semibold text-zinc-100 transition-colors hover:border-zinc-500 hover:text-white">
-              Connect wearable
-            </button>
-          </div>
-        </div>
       </section>
     </div>
   );

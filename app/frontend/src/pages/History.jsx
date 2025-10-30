@@ -87,39 +87,6 @@ export default function History() {
           </table>
         </div>
       </section>
-
-      <section className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-6">
-        <header className="flex items-center gap-3">
-          <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-amber-400/40 bg-amber-500/10 text-amber-300">
-            <Trophy className="h-5 w-5" />
-          </span>
-          <div>
-            <h4 className="text-lg font-semibold text-zinc-50">
-              Most impactful sessions
-            </h4>
-            <p className="text-sm text-zinc-400">
-              These workouts produced the biggest jumps in performance metrics.
-            </p>
-          </div>
-        </header>
-
-        <div className="mt-5 grid gap-4 md:grid-cols-3">
-          {historyEntries.map(({ session, highlight, duration }) => (
-            <article
-              key={`${session}-highlight`}
-              className="rounded-2xl border border-zinc-800 bg-zinc-900 px-4 py-4"
-            >
-              <p className="text-xs uppercase tracking-[0.25em] text-zinc-500">
-                {duration}
-              </p>
-              <p className="mt-2 text-base font-semibold text-zinc-50">
-                {session}
-              </p>
-              <p className="mt-2 text-sm text-zinc-400">{highlight}</p>
-            </article>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
