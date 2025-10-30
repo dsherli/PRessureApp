@@ -2,6 +2,11 @@
 
 Full stack fitness tracking platform
 
+## Preview
+<img width="1470" height="956" alt="Screenshot 2025-10-30 at 11 22 11 AM" src="https://github.com/user-attachments/assets/12d980d2-4390-4c48-9557-bf2bd0f4e38d" />
+<img width="1470" height="956" alt="Screenshot 2025-10-30 at 11 22 15 AM" src="https://github.com/user-attachments/assets/b536a9cc-f500-46e2-8bd3-e477f6929906" />
+<img width="1470" height="956" alt="Screenshot 2025-10-30 at 11 22 18 AM" src="https://github.com/user-attachments/assets/dac71820-5a63-43a3-9543-3b361cedd232" />
+
 ## Local development quickstart
 
 This repository contains a Django backend (`app/backend`) and a React + Vite frontend (`app/frontend`).
