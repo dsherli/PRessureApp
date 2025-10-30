@@ -7,10 +7,10 @@ const API = import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000/api";
 export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [dob, setDob] = useState(new Date());
+  const [dob, setDob] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -31,15 +31,16 @@ export default function Register() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(`${API}/users/auth/register/`, {
+      await axios.post(`${API}/users/auth/register/`, {
         username,
         email,
         password,
       });
       alert("Registration successful!");
       navigate("/login", { replace: true });
-    } catch (error) {
-      setError("Something went wrong, try again later");
+    } catch (err) {
+      console.error(err);
+      setErrorMessage("Something went wrong, try again later");
     }
   };
 
@@ -73,7 +74,10 @@ export default function Register() {
               }}
               placeholder="Username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)} // update state
+              onChange={(e) => {
+                setUsername(e.target.value);
+                setErrorMessage("");
+              }} // update state
             />
           </div>
           <div>
@@ -90,7 +94,10 @@ export default function Register() {
               }}
               placeholder="Email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)} // update state
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setErrorMessage("");
+              }} // update state
             />
           </div>
           <div>
@@ -107,7 +114,10 @@ export default function Register() {
               }}
               placeholder="DOB"
               value={dob}
-              onChange={(e) => setDob(e.target.value)} // update state
+              onChange={(e) => {
+                setDob(e.target.value);
+                setErrorMessage("");
+              }} // update state
             />
           </div>
           <div>
@@ -124,7 +134,10 @@ export default function Register() {
               }}
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)} // update state
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setErrorMessage("");
+              }} // update state
             />
           </div>
           <div>
@@ -141,7 +154,10 @@ export default function Register() {
               }}
               placeholder="Confirm Password"
               value={passwordConfirmation}
-              onChange={(e) => setPasswordConfirmation(e.target.value)} // update state
+              onChange={(e) => {
+                setPasswordConfirmation(e.target.value);
+                setErrorMessage("");
+              }} // update state
             />
             {passwordConfirmation && !passwordsMatch && (
               <p className="mt-1 text-sm text-rose-300">
@@ -150,12 +166,12 @@ export default function Register() {
             )}
           </div>
 
-          {error && (
+          {errorMessage && (
             <p
               className="text-sm rounded-md px-3 py-2"
               style={{ backgroundColor: "#2a1b1e", color: "#fca5a5" }}
             >
-              {error}
+              {errorMessage}
             </p>
           )}
 

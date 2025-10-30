@@ -7,7 +7,7 @@ const API = import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000/api";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -17,14 +17,15 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(`${API}/users/auth/login/`, {
+      await axios.post(`${API}/users/auth/login/`, {
         username,
         password,
       });
       alert("Login successful!");
       navigate("/dashboard", { replace: true });
-    } catch (error) {
-      setError("Something went wrong, try again later.");
+    } catch (err) {
+      console.error(err);
+      setErrorMessage("Something went wrong, try again later.");
     }
   };
 
@@ -58,7 +59,10 @@ export default function Login() {
               }}
               placeholder="Username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)} // update state
+              onChange={(e) => {
+                setUsername(e.target.value);
+                setErrorMessage("");
+              }} // update state
             />
           </div>
           <div>
@@ -75,9 +79,17 @@ export default function Login() {
               }}
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)} // update state
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setErrorMessage("");
+              }} // update state
             />
           </div>
+          {errorMessage && (
+            <p className="rounded-lg border border-rose-400/40 bg-rose-500/10 px-3 py-2 text-sm text-rose-200">
+              {errorMessage}
+            </p>
+          )}
           <button
             type="submit"
             className="w-full rounded-lg font-semibold py-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
